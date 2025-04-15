@@ -1,0 +1,41 @@
+<div class="container p-4">
+  @if (productResource.isLoading()) {
+    <p>Loading...</p>
+  } @else if (productResource.error()) {
+    <p>Error: {{ productResource.error() }}</p>
+  }
+
+  @if (productResource.value(); as product) {
+    <h1 class="text-xl font-bold">{{ product.title }}</h1>
+    <p class="text-md">{{ product.description }}</p>
+    <table class="mb-2">
+      <tr>
+        <td class="font-semibold pr-2">Price</td>
+        <td>{{ product.price | currency }}</td>
+      </tr>
+      <tr>
+        <td class="font-semibold pr-2">Category</td>
+        <td>{{ product.category }}</td>
+      </tr>
+      <tr>
+        <td class="font-semibold pr-2">Rating</td>
+        <td>{{ product.rating }}</td>
+      </tr>
+      <tr>
+        <td class="font-semibold pr-2">Stock</td>
+        <td>{{ product.stock }}</td>
+      </tr>
+    </table>
+
+    <div class="flex flex-row gap-2">
+      <a
+        routerLink="/products/edit/{{ product.id }}"
+        class="text-green-500 hover:underline"
+        >Edit</a
+      >
+      <button class="text-red-500 hover:underline" (click)="onDelete()">
+        Delete
+      </button>
+    </div>
+  }
+</div>

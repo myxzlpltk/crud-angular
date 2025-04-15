@@ -1,0 +1,44 @@
+<div class="container mx-auto p-4">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Product Title</legend>
+      <input type="text" class="input w-full" formControlName="title" />
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Product Description</legend>
+      <textarea
+        class="textarea w-full"
+        formControlName="description"
+      ></textarea>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Category</legend>
+      <input type="text" class="input w-full" formControlName="category" />
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Product Price</legend>
+      <input type="number" class="input w-full" formControlName="price" />
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Rating</legend>
+      <input type="number" class="input w-full" formControlName="rating" />
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Stock</legend>
+      <input type="number" class="input w-full" formControlName="stock" />
+    </fieldset>
+
+    <button
+      type="submit"
+      class="btn btn-primary mt-4"
+      [disabled]="productForm.invalid"
+    >
+      Create Product
+    </button>
+  </form>
+</div>
