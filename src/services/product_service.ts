@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
 import Paging from '../models/paging';
 import Product from '../models/product';
+import { Api } from '../core/api';
+import { Injectable } from '@angular/core';
 
 type RequestMeta = {
   abortSignal?: AbortSignal;
 };
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ProductService {
+  constructor(private api: Api) {}
+
   async getAll(
     args: {
       limit: number;
@@ -15,55 +18,64 @@ export class ProductService {
     },
     meta?: RequestMeta,
   ): Promise<Paging<Product>> {
-    // Prepare the URL with query parameters
-    const url = new URL('https://dummyjson.com/products');
-    url.searchParams.append('limit', args.limit.toString());
-    url.searchParams.append('skip', ((args.page - 1) * args.limit).toString());
+    const res = await this.api
+      .get('https://dummyjson.com/products', {
+        searchParams: {
+          limit: args.limit,
+          skip: (args.page - 1) * args.limit,
+        },
+        signal: meta?.abortSignal,
+      })
+      .json<{
+        products: Product[];
+        total: number;
+        skip: number;
+        limit: number;
+      }>();
 
-    return fetch(url, { signal: meta?.abortSignal })
-      .then((res) => res.json())
-      .then((res) => ({
-        data: res.products,
-        total: res.total,
-        skip: res.skip,
-        limit: res.limit,
-      }));
+    return {
+      data: res.products,
+      total: res.total,
+      skip: res.skip,
+      limit: res.limit,
+    };
   }
 
   async get(id: number, meta?: RequestMeta): Promise<Product> {
-    const url = new URL(`https://dummyjson.com/products/${id}`);
-    return fetch(url, { signal: meta?.abortSignal }).then((res) => res.json());
+    return this.api
+      .get(`https://dummyjson.com/products/${id}`, {
+        signal: meta?.abortSignal,
+      })
+      .json();
   }
 
   async create(
     product: Omit<Product, 'id'>,
     meta?: RequestMeta,
   ): Promise<void> {
-    return fetch('https://dummyjson.com/products/add', {
-      method: 'POST',
+    await this.api.post('https://dummyjson.com/products/add', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(product),
+      json: product,
       signal: meta?.abortSignal,
-    })
-      .then((res) => res.json())
-      .then(console.log);
+    });
   }
 
   async update(product: Product, meta?: RequestMeta): Promise<void> {
-    return fetch(`https://dummyjson.com/products/${product.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(product),
-      signal: meta?.abortSignal,
-    })
+    await this.api
+      .put(`https://dummyjson.com/products/${product.id}`, {
+        headers: { 'Content-Type': 'application/json' },
+        json: product,
+        signal: meta?.abortSignal,
+      })
       .then((res) => res.json())
       .then(console.log);
   }
 
   async delete(id: number, meta?: RequestMeta): Promise<void> {
-    return fetch(`https://dummyjson.com/products/${id}`, {
-      method: 'DELETE',
-      signal: meta?.abortSignal,
-    }).then((res) => res.json());
+    await this.api
+      .delete(`https://dummyjson.com/products/${id}`, {
+        signal: meta?.abortSignal,
+      })
+      .then((res) => res.json());
   }
 }
