@@ -1,7 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../../../services/product_service';
+import { ProductService } from '@modules/product/services/product_service';
 
 @Component({
   selector: 'app-product-list',

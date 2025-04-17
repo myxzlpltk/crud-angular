@@ -1,8 +1,8 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, inject, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { ProductService } from '../../../services/product_service';
-import { injectParams } from '../../../utils/router';
+import { ProductService } from '@modules/product/services/product_service';
+import { injectParams } from '@shared/utils/router';
 
 @Component({
   selector: 'app-product-detail',

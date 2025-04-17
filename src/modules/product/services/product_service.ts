@@ -1,6 +1,6 @@
-import Paging from '../models/paging';
-import Product from '../models/product';
-import { Api } from '../core/api';
+import Paging from '@shared/models/paging';
+import Product from '@modules/product/models/product';
+import { Api } from '@core/api';
 import { Injectable } from '@angular/core';
 
 type RequestMeta = {

@@ -1,8 +1,8 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { ProductService } from '../../../services/product_service';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { ProductService } from '@modules/product/services/product_service';
 import {
-  FormGroup,
   FormControl,
+  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
